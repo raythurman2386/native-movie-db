@@ -1,8 +1,19 @@
 import * as WebBrowser from "expo-web-browser";
 import React from "react";
+import axios from "axios";
+import { api_key } from "../private";
 import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
 
 export default function HomeScreen() {
+  const [movies, setMovies] = React.useState([]);
+
+  React.useEffect(() => {
+    axios
+      .get(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}`)
+      .then(res => console.log(res))
+      .catch(err => console.log(err));
+  }, []);
+
   return (
     <View style={styles.container}>
       <ScrollView
