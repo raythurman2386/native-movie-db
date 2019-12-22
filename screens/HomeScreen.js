@@ -1,17 +1,28 @@
 import * as WebBrowser from "expo-web-browser";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { api_key } from "../private";
-import { Platform, ScrollView, StyleSheet, Text, View } from "react-native";
+import {
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+  Image
+} from "react-native";
+
+const POSTER_PATH = "http://image.tmdb.org/t/p/w154";
 
 export default function HomeScreen() {
-  const [movies, setMovies] = React.useState([]);
+  const [movies, setMovies] = useState();
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios
-      .get(`https://api.themoviedb.org/3/discover/movie?api_key=${api_key}`)
-      .then(res => console.log(res))
-      .catch(err => console.log(err));
+      .get(
+        `https://api.themoviedb.org/3/movie/550?api_key=3e11806009cadfb91187ad7b65b9dc21`
+      )
+      .then(res => setMovies(res.data))
+      .catch(err => console.log(err.response));
   }, []);
 
   return (
@@ -24,6 +35,24 @@ export default function HomeScreen() {
           <Text style={styles.getStartedText}>
             The start of the React Native Movie DB!!
           </Text>
+          <Text style={{ marginTop: 50 }}>
+            {movies && movies.original_title}
+          </Text>
+          <View>
+            <Image
+              style={{ width: 100, height: 150, marginTop: 25 }}
+              source={{
+                uri: `${POSTER_PATH}${movies.poster_path}`
+              }}
+            />
+            {/* <img
+              src={``}
+              alt={movies.original_title}
+            /> */}
+          </View>
+          {/* {movies.map(movie => (
+            
+          ))} */}
         </View>
       </ScrollView>
     </View>
@@ -44,7 +73,8 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     alignItems: "center",
-    marginHorizontal: 50
+    marginHorizontal: 50,
+    marginVertical: 50
   },
   getStartedText: {
     fontSize: 17,
