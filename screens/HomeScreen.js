@@ -18,9 +18,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     axios
-      .get(
-        `https://api.themoviedb.org/3/movie/550?api_key=3e11806009cadfb91187ad7b65b9dc21`
-      )
+      .get(`https://api.themoviedb.org/3/movie/550?api_key=${api_key}`)
       .then(res => setMovies(res.data))
       .catch(err => console.log(err.response));
   }, []);
